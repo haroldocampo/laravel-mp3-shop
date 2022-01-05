@@ -18,4 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/user/{id}', [UserController::class, 'show']);
+Route::get('/api/songs', [ShopController::class, 'songs']);
