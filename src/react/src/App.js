@@ -13,6 +13,15 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const queryParams = new URLSearchParams(window.location.search);
+    const token = queryParams.get('token');
+
+    if (token == null) {
+      window.location.replace("http://localhost:8080/auth/google");
+      alert('token is null');
+      return;
+    }
+
     fetch("http://localhost:8080/api/songs")
       .then(res => res.json())
       .then(
@@ -30,6 +39,20 @@ class App extends Component {
         }
       )
 
+    fetch("http://localhost:8080/api/authcheck?token=" + token)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          alert(result);
+          if (!result) {
+            window.location.replace("http://localhost:8080/auth/google");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+      
     return;
     fetch("http://localhost:8080/api/library")
       .then(res => res.json())

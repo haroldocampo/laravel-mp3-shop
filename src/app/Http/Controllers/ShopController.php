@@ -5,17 +5,36 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Song;
+use Auth;
 
 class ShopController extends Controller
 {
     /**
-     * Show the profile for a given user.
+     * Get all songs from database
      *
-     * @param  int  $id
-     * @return \Illuminate\View\View
+     * @return \App\Models\Song
      */
     public function songs()
     {
         return response()->json(Song::all());
+    }
+
+    public function authcheck()
+    {
+        if (request()->query('token') !== null) {
+            $token = request()->query('token');
+            $user = User::where('password', $token)->first();
+            if ($user) {
+                return response()->json($user->id);
+            } else {
+                return response()->json(false);
+            }
+        } else {
+            if (Auth::check()) {
+                return response()->json(Auth::user()->id);
+            }
+            
+            return response()->json(false);
+        }
     }
 }
