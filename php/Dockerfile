@@ -17,7 +17,8 @@ RUN apt update \
         && curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
         && bash nodesource_setup.sh \
         && apt-get install -y nodejs \
-        && npm install -g yarn
+        && npm install -g yarn \
+        && a2enmod rewrite
         
 WORKDIR /var/www/laravel_docker
 
