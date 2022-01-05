@@ -7,7 +7,8 @@ class App extends Component {
     super(props);
     this.state = {
       cart: [],
-      songs: []
+      songs: [],
+      library: []
     };
   }
 
@@ -79,7 +80,7 @@ class App extends Component {
             </li>
           ))}
         </ul>
-        <h2>Your Songs Library</h2>
+        <h2>Your Song Library</h2>
         <ul>
           {library.map(item => (
             <li key={item.id}>
