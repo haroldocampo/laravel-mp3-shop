@@ -1,0 +1,18 @@
+Steps to run locally:
+
+The first three steps is to build the app
+
+1. go to root directory
+2. run "docker-compose up -d --build"
+3. run "docker-compose exec php-apache /bin/bash"
+
+Steps 4 and 5 is to start the React application
+
+4. run "cd react"
+5. run "yarn start"
+
+After these steps you may visit http://localhost:3000 to see the Dotty MP3 store application
+
+Upon visiting the site, it will ask you to login via Google. I used google social login to simplify the registration process. 
+
+If you have any concerns please viber/sms/call me at 09950975920 ill be happy to help, thank you! :)
