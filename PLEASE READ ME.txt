@@ -6,10 +6,15 @@ The first three steps is to build the app
 2. run "docker-compose up -d --build"
 3. run "docker-compose exec php-apache /bin/bash"
 
-Steps 4 and 5 is to start the React application
+Step 3 will enter you in the Laravel environment
 
-4. run "cd react"
-5. run "yarn start"
+4. while in the laravel environment make sure the migrations are run "php artisan migrate"
+5. please run database seeder "php artisan db:seed"
+
+Steps 5 and 6 is to start the React application
+
+5. run "cd react"
+6. run "yarn start"
 
 After these steps you may visit http://localhost:3000 to see the Dotty MP3 store application
 
