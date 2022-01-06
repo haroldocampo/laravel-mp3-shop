@@ -21,17 +21,17 @@ class ShopController extends Controller
 
     public function authcheck()
     {
-        if (request()->query('token') !== null) {
+        if (request()->query('token') != null) {
             $token = request()->query('token');
             $user = User::where('password', $token)->first();
             if ($user) {
-                return response()->json($user->id);
+                return response()->json($user);
             } else {
                 return response()->json(false);
             }
         } else {
             if (Auth::check()) {
-                return response()->json(Auth::user()->id);
+                return response()->json(Auth::user());
             }
             
             return response()->json(false);

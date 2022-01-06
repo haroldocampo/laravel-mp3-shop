@@ -14,12 +14,12 @@ class App extends Component {
 
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
-    const token = queryParams.get('token');
+    let token = queryParams.get('token');
 
     if (token == null) {
-      window.location.replace("http://localhost:8080/auth/google");
-      alert('token is null');
-      return;
+      token = localStorage.getItem("sessiontoken");
+    } else {
+      localStorage.setItem('sessiontoken',token);
     }
 
     fetch("http://localhost:8080/api/songs")
@@ -43,7 +43,7 @@ class App extends Component {
       .then(res => res.json())
       .then(
         (result) => {
-          alert(result);
+          console.log(result);
           if (!result) {
             window.location.replace("http://localhost:8080/auth/google");
           }
