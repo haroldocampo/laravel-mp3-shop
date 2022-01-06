@@ -25,6 +25,8 @@ Route::get('/google', function () {
 });
 
 Route::get('/api/songs', [ShopController::class, 'songs']);
+Route::get('/api/library', [ShopController::class, 'library']);
+Route::post('/api/checkout', [ShopController::class, 'checkout']);
 Route::get('/api/authcheck', [ShopController::class, 'authcheck']);
   
 Auth::routes();

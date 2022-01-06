@@ -8,7 +8,8 @@ class App extends Component {
     this.state = {
       cart: [],
       songs: [],
-      library: []
+      library: [],
+      user: {}
     };
   }
 
@@ -47,29 +48,37 @@ class App extends Component {
           if (!result) {
             window.location.replace("http://localhost:8080/auth/google");
           }
+
+          this.setState({
+            user: result
+          });
+
+          this.getLibrary(result.id);
+
         },
         (error) => {
           console.log(error);
         }
       )
-      
-    return;
-    fetch("http://localhost:8080/api/library")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            songs: result
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
+  }
+
+  getLibrary(userId) {
+    fetch("http://localhost:8080/api/library?user_id=" + userId)
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.setState({
+          isLoaded: true,
+          library: result
+        });
+      },
+      (error) => {
+        this.setState({
+          isLoaded: true,
+          error
+        });
+      }
+    );
   }
 
   addToCart(song) {
@@ -83,11 +92,32 @@ class App extends Component {
     });
   }
 
+  checkout() {
+    fetch('http://localhost:8080/api/checkout', {
+      method: 'post',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ user_id: this.state.user.id, song_ids: this.state.cart.map(s => s.id)})
+     })
+     .then(res => res.json())
+     .then(
+       (result) => {
+        this.getLibrary(this.state.user.id);
+        this.setState({cart: []});
+       },
+       (error) => {
+         console.log(error);
+       }
+     );;
+
+     
+  }
+
   render() {
-    const { error, isLoaded, songs, cart, library } = this.state;
+    const { error, isLoaded, songs, cart, library, user } = this.state;
     return (
       <div>
         <h2>Dotty MP3 Store</h2>
+        <h3>Welcome {user.name}</h3>
         <ul>
           {songs.map(item => (
             <li key={item.id}>
@@ -99,10 +129,11 @@ class App extends Component {
         <ul>
           {cart.map(item => (
             <li key={item.id}>
-              {item.songName} - {item.artist} <button onClick={() => this.addToCart(item)}>+ Cart</button>
+              {item.songName} - {item.artist} <button onClick={() => this.removeCart(item)}>Remove</button>
             </li>
           ))}
         </ul>
+        <button onClick={() => this.checkout()}>Checkout</button>
         <h2>Your Song Library</h2>
         <ul>
           {library.map(item => (
